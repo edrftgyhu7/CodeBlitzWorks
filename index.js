@@ -1,15 +1,20 @@
-function findMaxLength(nums) {
-  const map = new Map();
-  map.set(0, -1);
+function findCircleNum(M) {
+  if (!M || M.length === 0) return 0;
+  const visited = new Array(M.length).fill(false);
   let count = 0;
-  let maxLength = 0;
-  for (let i = 0; i < nums.length; i++) {
-    count += nums[i] === 1 ? 1 : -1;
-    if (map.has(count)) {
-      maxLength = Math.max(maxLength, i - map.get(count));
-    } else {
-      map.set(count, i);
+  for (let i = 0; i < M.length; i++) {
+    if (!visited[i]) {
+      dfs(M, i, visited);
+      count++;
     }
   }
-  return maxLength;
+  return count;
+}
+function dfs(M, i, visited) {
+  visited[i] = true;
+  for (let j = 0; j < M.length; j++) {
+    if (M[i][j] === 1 && !visited[j]) {
+      dfs(M, j, visited);
+    }
+  }
 }

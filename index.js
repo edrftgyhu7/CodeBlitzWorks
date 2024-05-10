@@ -1,12 +1,15 @@
-function bubbleSort(arr) {
-  for (let i = 0; i < arr.length - 1; i++) {
-    for (let j = 0; j < arr.length - i - 1; j++) {
-      if (arr[j] > arr[j + 1]) {
-        let temp = arr[j];
-        arr[j] = arr[j + 1];
-        arr[j + 1] = temp;
-      }
-    }
+function productExceptSelf(nums) {
+  const n = nums.length;
+  const result = new Array(n).fill(1);
+  let product = 1;
+  for (let i = 0; i < n; i++) {
+    result[i] *= product;
+    product *= nums[i];
   }
-  return arr;
+  product = 1;
+  for (let i = n - 1; i >= 0; i--) {
+    result[i] *= product;
+    product *= nums[i];
+  }
+  return result;
 }

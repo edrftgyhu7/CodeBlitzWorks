@@ -1,18 +1,30 @@
-function numDistinct(s, t) {
-  const m = s.length;
-  const n = t.length;
-  const dp = Array.from(Array(m + 1), () => Array(n + 1).fill(0));
-  for (let i = 0; i <= m; i++) {
-    dp[i][0] = 1;
-  }
-  for (let i = 1; i <= m; i++) {
-    for (let j = 1; j <= n; j++) {
-      if (s[i - 1] === t[j - 1]) {
-        dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
-      } else {
-        dp[i][j] = dp[i - 1][j];
-      }
+function maximalRectangle(matrix) {
+  if (matrix.length === 0 || matrix[0].length === 0) return 0;
+  const rows = matrix.length;
+  const cols = matrix[0].length;
+  const heights = new Array(cols).fill(0);
+  let maxArea = 0;
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+      heights[j] = matrix[i][j] === "1" ? heights[j] + 1 : 0;
     }
+    maxArea = Math.max(maxArea, largestRectangleArea(heights));
   }
-  return dp[m][n];
+  return maxArea;
+  function largestRectangleArea(heights) {
+    const stack = [];
+    let maxArea = 0;
+    for (let i = 0; i <= heights.length; i++) {
+      while (
+        stack.length &&
+        (i === heights.length || heights[i] < heights[stack[stack.length - 1]])
+      ) {
+        const height = heights[stack.pop()];
+        const width = stack.length === 0 ? i : i - stack[stack.length - 1] - 1;
+        maxArea = Math.max(maxArea, height * width);
+      }
+      stack.push(i);
+    }
+    return maxArea;
+  }
 }
